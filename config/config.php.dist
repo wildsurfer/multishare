@@ -1,0 +1,15 @@
+<?php
+
+$config = array(
+    'twitter' => array(
+        'settings' => array(
+            'oauth_access_token' => '<INPUT>',
+            'oauth_access_token_secret' => '<INPUT>',
+            'consumer_key' => '<INPUT>',
+            'consumer_secret' => '<INPUT>'
+        ),
+        'url' => 'https://api.twitter.com/1.1/'
+    )
+);
+
+return $config;

@@ -2,3 +2,4 @@
 .vimprj
 .tags
 /bin/phpunit
+/config/config.php
