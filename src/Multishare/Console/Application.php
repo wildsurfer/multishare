@@ -17,7 +17,7 @@ class Application extends BaseApplication {
     public function getDefaultCommands() {
         $commands = parent::getDefaultCommands();
 
-        $commands[] = new Command\TwitterCommand($this->app);
+        $commands[] = new Command\TwitterUrlCommand($this->app);
 
         return $commands;
     }

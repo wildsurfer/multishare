@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 use Silex\Application;
 
-class TwitterCommand extends Command {
+class TwitterUrlCommand extends Command {
 
     protected $app;
 
@@ -22,6 +22,20 @@ class TwitterCommand extends Command {
         $this->setName("multishare:twitter:url")
             ->setDescription("Share url in Twitter")
             ->setDefinition(array(
+                new InputOption(
+                    'url',
+                    null,
+                    InputOption::VALUE_REQUIRED,
+                    'Url to share',
+                    null
+                ),
+                new InputOption(
+                    'comment',
+                    null,
+                    InputArgument::OPTIONAL,
+                    'Your comment',
+                    null
+                )
             ))
             ->setHelp("The <info>test</info> command does things and stuff");
     }
@@ -36,8 +50,11 @@ class TwitterCommand extends Command {
 
         $twitter = new \TwitterAPIExchange($settings);
 
+        $inputUrl = $input->getOption('url');
+        $inputComment = $input->getOption('comment');
+
         $postFields = array(
-            'status' => 'Test status '.time()
+            'status' => $inputComment . ' ' . $inputUrl
         );
 
         echo $twitter->buildOauth($url, $requestMethod)
