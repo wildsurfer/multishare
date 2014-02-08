@@ -7,6 +7,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+use Multishare\Network\Twitter;
+
 use Silex\Application;
 
 class TwitterUrlCommand extends Command {
@@ -44,21 +46,20 @@ class TwitterUrlCommand extends Command {
 
         $app = $this->app;
         $settings = $app['twitter']['settings'];
-        $url = $app['twitter']['url'].'statuses/update.json';
+        $url = $app['twitter']['url'];
 
-        $requestMethod = 'POST';
-
-        $twitter = new \TwitterAPIExchange($settings);
+        $twitter = new Twitter();
+        $twitter->setConfig($settings);
+        $twitter->setUrl($url);
 
         $inputUrl = $input->getOption('url');
         $inputComment = $input->getOption('comment');
 
-        $postFields = array(
-            'status' => $inputComment . ' ' . $inputUrl
-        );
+        $result = $twitter->shareUrl($inputUrl, $inputComment);
 
-        echo $twitter->buildOauth($url, $requestMethod)
-            ->setPostfields($postFields)
-            ->performRequest();
+        if ($result)
+            $output->writeln('<info>Url posted to twitter</info>');
+        else
+            $output->writeln('<error>Error sharing to twitter</error>');
     }
 }

@@ -1,28 +1,51 @@
 <?php
 
-class Twitter extends NetworkInterface
+namespace Multishare\Network;
+
+class Twitter
 {
-    public function setApp(Application $app)
+    protected $config;
+    protected $url;
+
+    public function setConfig(array $config)
     {
-        $this->app = $app;
+        $this->config = $config;
     }
 
-    public function getApp()
+    public function getConfig()
     {
-        return $this->app;
+        return $this->config;
     }
 
-    public function shareUrl()
+    public function setUrl($url)
     {
-        $app = $this->getApp();
+        $this->url= $url;
+    }
 
-        $data = array(
-            'status' => 'Test status text'
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    public function shareUrl($inputUrl, $inputComment)
+    {
+        $settings = $this->getConfig();
+        $url = $this->getUrl();
+        $url = $url.'statuses/update.json';
+
+        $requestMethod = 'POST';
+
+        $twitter = new \TwitterAPIExchange($settings);
+
+        $postFields = array(
+            'status' => $inputComment . ' ' . $inputUrl
         );
 
-        $twitter = new TwitterAPIExchange($app['twitter']['settings']);
-        echo $twitter->buildOauth($app['twitter']['url'].'statuses/update.json', 'POST')
-            ->setPostfields($data)
+        $result = $twitter->buildOauth($url, $requestMethod)
+            ->setPostfields($postFields)
             ->performRequest();
+
+        if ($result) return true;
+        else return false;
     }
 }
