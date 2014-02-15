@@ -17,7 +17,8 @@ class Application extends BaseApplication {
     public function getDefaultCommands() {
         $commands = parent::getDefaultCommands();
 
-        $commands[] = new Command\TwitterUrlCommand($this->app);
+        $commands[] = new Command\VkontakteTextCommand($this->app);
+        $commands[] = new Command\TwitterTextCommand($this->app);
 
         return $commands;
     }

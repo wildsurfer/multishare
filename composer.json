@@ -10,8 +10,8 @@
     "require": {
         "knplabs/console-service-provider": "dev-master",
         "silex/silex": "~1.1",
-        "j7mbo/twitter-api-php": "dev-master",
-        "igorw/config-service-provider" : "~1.1"
+        "igorw/config-service-provider" : "~1.1",
+        "lusitanian/oauth": "~0.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~3.7"

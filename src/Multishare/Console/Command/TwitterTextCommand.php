@@ -7,11 +7,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-use Multishare\Network\Twitter;
+use Multishare\Network\OAuth1\Twitter;
 
 use Silex\Application;
 
-class TwitterUrlCommand extends Command {
+class TwitterTextCommand extends Command {
 
     protected $app;
 
@@ -21,21 +21,14 @@ class TwitterUrlCommand extends Command {
     }
 
     protected function configure() {
-        $this->setName("multishare:twitter:url")
-            ->setDescription("Share url in Twitter")
+        $this->setName("multishare:twitter:text")
+            ->setDescription("Share text in Twitter")
             ->setDefinition(array(
                 new InputOption(
-                    'url',
+                    'text',
                     null,
                     InputOption::VALUE_REQUIRED,
-                    'Url to share',
-                    null
-                ),
-                new InputOption(
-                    'comment',
-                    null,
-                    InputArgument::OPTIONAL,
-                    'Your comment',
+                    'Text to share',
                     null
                 )
             ))
@@ -43,23 +36,19 @@ class TwitterUrlCommand extends Command {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-
         $app = $this->app;
-        $settings = $app['twitter']['settings'];
-        $url = $app['twitter']['url'];
+        $settings = $app['twitter'];
 
-        $twitter = new Twitter();
-        $twitter->setConfig($settings);
-        $twitter->setUrl($url);
+        $twitter = new Twitter($settings);
 
-        $inputUrl = $input->getOption('url');
-        $inputComment = $input->getOption('comment');
+        $inputText = $input->getOption('text');
 
-        $result = $twitter->shareUrl($inputUrl, $inputComment);
+        $result = $twitter->shareText($inputText);
 
         if ($result)
-            $output->writeln('<info>Url posted to twitter</info>');
+            $output->writeln('<info>Text shared to Twitter</info>');
         else
-            $output->writeln('<error>Error sharing to twitter</error>');
+            $output->writeln('<error>Error sharing text to Twitter</error>');
+
     }
 }
